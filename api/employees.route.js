@@ -17,12 +17,12 @@ employeesRotues.route('/add').post((req,res) => {
 
 //Route for getting data from Mongo
 employeesRotues.route('/').get((req,res) => {
-    Employees.find(err,employees => {
+    Employees.find((err,employees) => {
         if(err) {
-            console.log(err);
+            return console.log(err);
         }
         else {
-            res.json(employees);
+             return res.json(employees);
         }
     }); 
 });
@@ -30,7 +30,7 @@ employeesRotues.route('/').get((req,res) => {
 //Route for Editing data
 employeesRotues.route('/edit/:id').get((req,res) => {
     let id = req.params.id;
-    Employees.findById(id,(err,employee => {
+    Employees.findById(id,((err,employee) => {
         if(err) {
             console.log('Employee not founnd in DB');
         }
@@ -42,16 +42,22 @@ employeesRotues.route('/edit/:id').get((req,res) => {
 
 //Route for Editing data
 employeesRotues.route('/update/:id').post((req,res) => {
-    Employees.findById(req.params.id,(err,employee => {
+    Employees.findById (req.params.id,((err,employee) => {
         if(err) {
             res.status(400).send('Data not found');
         }
         else {
+            console.log("employee ",employee);
+            console.log("employee.person_name",employee.person_name);
+            console.log("req.body.person_name",req.body.person_name);
             employee.person_name = req.body.person_name;
             employee.project_name = req.body.project_name;
             employee.employee_id = req.body.employee_id;
             
+
+
             employee.save().then(employee => {
+                console.log("employee after",employee)
                 res.json('Update Complete')
             })
         }
@@ -63,7 +69,7 @@ employeesRotues.route('/update/:id').post((req,res) => {
 
 //Route for deleting/Removing data
 employeesRotues.route('/delete/:id').get((req,res) => {
-    Employees.findByIdAndRemove({_id:req.params.id},(err,employee =>{
+    Employees.findByIdAndRemove({_id:req.params.id},((err,employee) =>{
         if(err) res.json(err);
         else res.json('Successfully Removed...!!!');
         })
