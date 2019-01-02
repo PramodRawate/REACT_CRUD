@@ -6,7 +6,7 @@ export default class Edit extends Component {
     super(props);        
     
     this.onChangeEmployeeName = this.onChangeEmployeeName.bind(this);
-    this.onChangeprojectName = this.onChangeprojectName.bind(this);
+    this.onChangeProjectName = this.onChangeProjectName.bind(this);
     this.onChangeEmployeeId = this.onChangeEmployeeId.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
@@ -37,7 +37,7 @@ export default class Edit extends Component {
         });
     }
 
-    onChangeprojectName(event) {
+    onChangeProjectName(event) {
         this.setState({
             project_name: event.target.value
         });
@@ -59,17 +59,17 @@ export default class Edit extends Component {
     console.log(this.props.match.params.id);
     axios.post('http://localhost:4000/employees/update/'+this.props.match.params.id, obj)
         .then(res => console.log(res.data));
-    
     this.props.history.push('/index');
+    return obj;
   }
  
   render() {
     return (
         <div style={{ marginTop: 10 }}>
-            <h3 align="center">Update Business</h3>
+            <h3 align="center">Update Employee Data</h3>
             <form onSubmit={this.onSubmit}>
                 <div className="form-group">
-                    <label>Person Name:  </label>
+                    <label>Employee Name:  </label>
                     <input 
                       type="text" 
                       className="form-control" 
@@ -78,15 +78,15 @@ export default class Edit extends Component {
                       />
                 </div>
                 <div className="form-group">
-                    <label>Business Name: </label>
+                    <label>Project Name: </label>
                     <input type="text" 
                       className="form-control"
                       value={this.state.project_name}
-                      onChange={this.onChangeprojectName}
+                      onChange={this.onChangeProjectName}
                       />
                 </div>
                 <div className="form-group">
-                    <label>GST Number: </label>
+                    <label>Employee Id: </label>
                     <input type="text" 
                       className="form-control"
                       value={this.state.employee_id}

@@ -3,6 +3,18 @@ const employeesRotues = express.Router();
 
 let Employees = require('./employees.model');
 
+//Route for getting data from Mongo
+employeesRotues.route('/').get((req,res) => {
+    Employees.find((err,employees) => {
+        if(err) {
+            console.log(err);
+        }
+        else {
+            res.json(employees);
+        }
+    });
+});
+
 //Route for Storing data to Mongo
 employeesRotues.route('/add').post((req,res) => {
     let employees = new Employees(req.body);
@@ -15,17 +27,6 @@ employeesRotues.route('/add').post((req,res) => {
     });
 });
 
-//Route for getting data from Mongo
-employeesRotues.route('/').get((req,res) => {
-    Employees.find((err,employees) => {
-        if(err) {
-            return console.log(err);
-        }
-        else {
-             return res.json(employees);
-        }
-    }); 
-});
 
 //Route for Editing data
 employeesRotues.route('/edit/:id').get((req,res) => {
@@ -35,31 +36,28 @@ employeesRotues.route('/edit/:id').get((req,res) => {
             console.log('Employee not founnd in DB');
         }
         else {
-            res.json(employee);
+            employee.save().then(employee => {
+                console.log("employee after",employee)
+                res.json('Update Complete')
+            })
+            return res.json(employee);
         }
     }));
 });
 
 //Route for Editing data
 employeesRotues.route('/update/:id').post((req,res) => {
+    
     Employees.findById (req.params.id,((err,employee) => {
         if(err) {
             res.status(400).send('Data not found');
         }
         else {
-            console.log("employee ",employee);
-            console.log("employee.person_name",employee.person_name);
-            console.log("req.body.person_name",req.body.person_name);
-            employee.person_name = req.body.person_name;
+            employee.employee_name = req.body.employee_name;
             employee.project_name = req.body.project_name;
             employee.employee_id = req.body.employee_id;
             
-
-
-            employee.save().then(employee => {
-                console.log("employee after",employee)
-                res.json('Update Complete')
-            })
+            employee.save().then(res.json('Update Complete'));    
         }
     }))
     .catch(err => {
@@ -71,7 +69,9 @@ employeesRotues.route('/update/:id').post((req,res) => {
 employeesRotues.route('/delete/:id').get((req,res) => {
     Employees.findByIdAndRemove({_id:req.params.id},((err,employee) =>{
         if(err) res.json(err);
-        else res.json('Successfully Removed...!!!');
+        else{
+            res.json('Successfully Removed...!!!');
+        } 
         })
     );
 });

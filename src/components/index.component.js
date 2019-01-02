@@ -6,22 +6,25 @@ export class Index extends Component {
     constructor(props) {
         super(props);
 
-        this.state= {employees:[]};
+        this.state= {
+            employees:[],
+            update:true
+        };
     }
 
     componentWillMount() {
         axios.get('http://localhost:4000/employees')
-            .then(response => {
-                this.setState({employees:response.data});
-            })
-            .catch(err => {
-                console.log(err);
-            })
+        .then(response => {
+            console.log('ComponentWillMount - calling GET');
+            this.setState({employees:response.data});
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
 
     tabRow() {
         return this.state.employees.map((object,i) => {
-            console.log(object);
             return <TableRow obj={object} key={i} />
         })
     };

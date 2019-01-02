@@ -26,7 +26,6 @@ class App extends Component {
                   </li>
                 </ul>
               </div>
-              <button className="btn btn-primary">Click Me</button>
             </nav> <br/>
             <h2>Welcome to React CRUD Tutorial</h2>
             <Switch>

@@ -46,7 +46,7 @@ export class Create extends Component {
         axios.post('http://localhost:4000/employees/add',obj)
             .then(res => console.log('Successfully added Employee Data',res))
             .catch(err => console.log(err));
-
+            this.props.history.push('/index');
         this.setState({
           employee_name: '',
           project_name: '',
